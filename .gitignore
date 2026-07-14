@@ -1,0 +1,27 @@
+# 虚拟环境 & 构建产物
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# 模型缓存
+.models/
+
+# 采集数据（体积大，不入库）
+data/
+checkpoints/
+
+# IDE
+.vscode/
+.idea/
+.claude/
+
+# 输出结果 / 本地实验文件
+results/
+
+# 系统
+.DS_Store
+Thumbs.db

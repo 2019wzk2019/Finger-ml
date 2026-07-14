@@ -1,0 +1,57 @@
+[project]
+name = "finger-ml"
+version = "0.1.0"
+description = "Offline hand gesture event detection with start/end times"
+requires-python = ">=3.10"
+dependencies = [
+    "opencv-python>=4.9.0",
+    "numpy>=1.26.0",
+    "mediapipe>=0.10.14",
+    "pillow>=10.0.0",
+]
+
+[project.scripts]
+finger-collect = "finger_ml.capture:main"
+finger-preprocess = "finger_ml.preprocess:main"
+finger-train = "finger_ml.train:main"
+finger-detect = "finger_ml.detect:main"
+finger-audit = "finger_ml.audit:main"
+finger-eval = "finger_ml.eval_events:main"
+finger-review = "finger_ml.review:main"
+
+# 训练依赖（可选）
+# CPU:  uv sync --group train
+# CUDA: uv sync --group train-cuda
+[dependency-groups]
+train = [
+    "torch>=2.2.0",
+    "torchvision>=0.17.0",
+    "tqdm>=4.66.0",
+    "scikit-learn>=1.4.0",
+]
+# train-cuda 继承 train 的全部依赖，并通过下方 sources 改用 CUDA index
+train-cuda = [
+    { include-group = "train" },
+]
+
+# CUDA 13.0 加速（需 NVIDIA GPU + CUDA 12.1+ 驱动）
+# 仅在 --group train-cuda 时生效；--group train 走 PyPI CPU 版
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu130", group = "train-cuda" },
+]
+torchvision = [
+    { index = "pytorch-cu130", group = "train-cuda" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/finger_ml"]
