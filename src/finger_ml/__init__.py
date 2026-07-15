@@ -1,3 +1,6 @@
-"""finger-ml — offline hand gesture event detection."""
+"""finger-ml — 离线手势事件检测。
+
+从录制视频中检测手势片段，输出结构化事件（类别、起止帧/时间）。
+"""
 
 __version__ = "0.1.0"
